@@ -11,6 +11,7 @@
 
 <body>
   <h1 id="title"></h1>
+  <p id="para"></p>
   <div id="mapid" style="width: 600px; height: 400px;"></div><br>
   <script>
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
@@ -50,8 +51,16 @@
 	function myFunction(xml) {
         var xmlDoc = xml.responseXML;
         document.getElementById("title").innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+		var latlngs = []
+		
+		for(var count = 0; count < xmlDoc.getElementsByTagName("trkpt").length; count++){
+		    var lat = xmlDoc.getElementsByTagName("trkpt")[count].getAttribute("lat");
+			var lon = xmlDoc.getElementsByTagName("trkpt")[count].getAttribute("lon");
+			latlngs.push([lat,lon])
+        };
+		var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+		
     }
-	
 </script>
 </body>
 </html>
