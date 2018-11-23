@@ -12,7 +12,18 @@
 <body>
   <h1 id="title"></h1>
   <p id="para"></p>
+  <ul>
+    <li id="time">Total run time: </li>
+	<li id="distance">Total distance: </li>
+	<li id="calories">Calories burned: </li>
+	<li id="pace">Average pace: </li>
+	<li id="heart_rate">Average heart rate: </li>
+	<li id="elevation">Total elevation gain: </li>
+  </ul>
+  
   <div id="mapid" style="width: 600px; height: 400px;"></div><br>
+  
+  
   <script>
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -40,9 +51,22 @@
 	function myFunction(xml) {
         var xmlDoc = xml.responseXML;
         document.getElementById("title").innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+		// list of points
 		var latlngs = []
+		//starting point
 		var latstart = xmlDoc.getElementsByTagName("trkpt")[0].getAttribute("lat");
 		var lonstart = xmlDoc.getElementsByTagName("trkpt")[0].getAttribute("lon");
+		
+		//get first time
+		var timestart = xmlDoc.getElementsByTagName("time")[0].firstChild.nodeValue;
+		timestart = new Date(timestart.slice(0,4),timestart.slice(5,7),timestart.slice(8,10),timestart.slice(11,13),timestart.slice(14,16),timestart.slice(17,19));
+		
+		//get last time
+		var timeend = xmlDoc.getElementsByTagName("time")[xmlDoc.getElementsByTagName("time").length-1].lastChild.nodeValue;
+		timeend = new Date(timeend.slice(0,4),timeend.slice(5,7),timeend.slice(8,10),timeend.slice(11,13),timeend.slice(14,16),timeend.slice(17,19));
+		//calculate time taken
+		var timetaken = new Date(millisecond = timeend - timestart);
+		document.getElementById("time").innerHTML += timetaken.toTimeString().slice(0,8);
 		
 		mymap.setView([latstart, lonstart], 13);
 		
@@ -51,10 +75,11 @@
 			var lon = xmlDoc.getElementsByTagName("trkpt")[count].getAttribute("lon");
 			latlngs.push([lat,lon])
         };
+		
 		var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
 		
     }
-</script>
+  </script>
 </body>
 </html>
 
