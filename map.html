@@ -7,10 +7,11 @@
   <link rel="shortcut icon" type="image/x-icon" href="docs/images/favicon.ico" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.3.4/dist/leaflet.css" integrity="sha512-puBpdR0798OZvTTbP4A8Ix/l+A4dHDD0DGqYW6RQ+9jxkRFclaxxQb/SJAWZfWAkuyeQUytO7+7N4QKrDh+drA==" crossorigin=""/>
   <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js" integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA==" crossorigin=""></script>
-</head>
+ </head>
 
 <body>
-  <div id="mapid" style="width: 600px; height: 400px;"></div>
+  <h1 id="title"></h1>
+  <div id="mapid" style="width: 600px; height: 400px;"></div><br>
   <script>
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -36,6 +37,21 @@
         .openOn(mymap);
 }
     mymap.on('click', onMapClick);
+	
+	var xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function() {
+        if (this.readyState == 4 && this.status == 200) {
+        myFunction(this);
+        }
+    };
+    xhttp.open("GET", "run.gpx", true);
+    xhttp.send();
+	
+	function myFunction(xml) {
+        var xmlDoc = xml.responseXML;
+        document.getElementById("title").innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+    }
+	
 </script>
 </body>
 </html>
