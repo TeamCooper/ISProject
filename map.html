@@ -68,6 +68,16 @@
 		var timetaken = new Date(millisecond = timeend - timestart);
 		document.getElementById("time").innerHTML += timetaken.toTimeString().slice(0,8);
 		
+		var elevationgain = 0;
+		for(var count = 0; count < xmlDoc.getElementsByTagName("ele").length - 1; count++){
+		  if (xmlDoc.getElementsByTagName("ele")[count].firstChild.nodeValue
+		     < xmlDoc.getElementsByTagName("ele")[count+1].firstChild.nodeValue){
+			 elevationgain +=  xmlDoc.getElementsByTagName("ele")[count+1].firstChild.nodeValue - xmlDoc.getElementsByTagName("ele")[count].firstChild.nodeValue;
+          };
+        };	
+        document.getElementById("elevation").innerHTML += elevationgain + "m" ;		
+		
+		
 		mymap.setView([latstart, lonstart], 13);
 		
 		for(var count = 0; count < xmlDoc.getElementsByTagName("trkpt").length; count++){
