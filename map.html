@@ -19,17 +19,6 @@
     maxZoom: 18,
     attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, ' + '<a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, ' + 'Imagery © <a href="https://www.mapbox.com/">Mapbox</a>', id: 'mapbox.streets'
 }).addTo(mymap);
-    L.marker([51.5, -0.09]).addTo(mymap).bindPopup("<b>Hello world!</b><br />I am a popup.").openPopup();
-    L.circle([51.508, -0.11], 500, {
-      color: 'red',
-      fillColor: '#f03',
-      fillOpacity: 0.5
-}).addTo(mymap).bindPopup("I am a circle.");
-    L.polygon([
-      [51.509, -0.08],
-      [51.503, -0.06],
-      [51.51, -0.047]
-]).addTo(mymap).bindPopup("I am a polygon.");
     var popup = L.popup();
     function onMapClick(e) {
       popup
@@ -52,6 +41,10 @@
         var xmlDoc = xml.responseXML;
         document.getElementById("title").innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
 		var latlngs = []
+		var latstart = xmlDoc.getElementsByTagName("trkpt")[0].getAttribute("lat");
+		var lonstart = xmlDoc.getElementsByTagName("trkpt")[0].getAttribute("lon");
+		
+		mymap.setView([latstart, lonstart], 13);
 		
 		for(var count = 0; count < xmlDoc.getElementsByTagName("trkpt").length; count++){
 		    var lat = xmlDoc.getElementsByTagName("trkpt")[count].getAttribute("lat");
