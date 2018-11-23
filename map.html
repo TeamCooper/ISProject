@@ -52,10 +52,7 @@
         var xmlDoc = xml.responseXML;
         document.getElementById("title").innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
 		// list of points
-		var latlngs = []
-		//starting point
-		var latstart = xmlDoc.getElementsByTagName("trkpt")[0].getAttribute("lat");
-		var lonstart = xmlDoc.getElementsByTagName("trkpt")[0].getAttribute("lon");
+		var latlngs = [];
 		
 		//get first time
 		var timestart = xmlDoc.getElementsByTagName("time")[0].firstChild.nodeValue;
@@ -68,23 +65,36 @@
 		var timetaken = new Date(millisecond = timeend - timestart);
 		document.getElementById("time").innerHTML += timetaken.toTimeString().slice(0,8);
 		
+		//list of heartrates
+		var hr = []; 
+		var hrsum = 0;
+		
+		for(var i = 0; i < xmlDoc.getElementsByTagName("hr").length; i++){
+            hr.push(parseInt(xmlDoc.getElementsByTagName("hr")[i].firstChild.nodeValue));
+        };	
+		for (var i = 0; i < hr.length; i++){
+		    hrsum += hr[i];
+		};
+		var averagehr = hrsum / hr.length;
+		document.getElementById("heart_rate").innerHTML += averagehr + "bpm";	
+		
 		var elevationgain = 0;
-		for(var count = 0; count < xmlDoc.getElementsByTagName("ele").length - 1; count++){
-		  if (xmlDoc.getElementsByTagName("ele")[count].firstChild.nodeValue
-		     < xmlDoc.getElementsByTagName("ele")[count+1].firstChild.nodeValue){
-			 elevationgain +=  xmlDoc.getElementsByTagName("ele")[count+1].firstChild.nodeValue - xmlDoc.getElementsByTagName("ele")[count].firstChild.nodeValue;
-          };
+		//calculate elevation gain
+		for(var i = 0; i < xmlDoc.getElementsByTagName("ele").length - 1; i++){
+		    if (xmlDoc.getElementsByTagName("ele")[i].firstChild.nodeValue < xmlDoc.getElementsByTagName("ele")[i+1].firstChild.nodeValue){
+			    elevationgain +=  xmlDoc.getElementsByTagName("ele")[i+1].firstChild.nodeValue - xmlDoc.getElementsByTagName("ele")[i].firstChild.nodeValue;
+            };
         };	
         document.getElementById("elevation").innerHTML += elevationgain + "m" ;		
 		
 		
-		mymap.setView([latstart, lonstart], 13);
 		
-		for(var count = 0; count < xmlDoc.getElementsByTagName("trkpt").length; count++){
-		    var lat = xmlDoc.getElementsByTagName("trkpt")[count].getAttribute("lat");
-			var lon = xmlDoc.getElementsByTagName("trkpt")[count].getAttribute("lon");
-			latlngs.push([lat,lon])
+		for(var i = 0; i < xmlDoc.getElementsByTagName("trkpt").length; i++){
+		    var lat = xmlDoc.getElementsByTagName("trkpt")[i].getAttribute("lat");
+			var lon = xmlDoc.getElementsByTagName("trkpt")[i].getAttribute("lon");
+			latlngs.push([lat,lon]);
         };
+		mymap.setView(latlngs[0], 13);
 		
 		var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
 		
