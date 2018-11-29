@@ -11,6 +11,7 @@
     <script src="https://unpkg.com/leaflet@1.3.4/dist/leaflet.js"
             integrity="sha512-nMMmRyTVoLYqjP9hrbed9S+FzjZHW5gY1TWCHA5ckwXZBadntCNs8kEqAWdrb9O7rxbCaA4lKTIWjDXZxflOcA=="
             crossorigin=""></script>
+	<script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 </head>
 
 <body>
@@ -28,6 +29,9 @@
 <div id="mapid" style="width: 600px; height: 400px;"></div>
 <br>
 
+<div id="hrContainer" style="height: 370px; width: 500px;"></div>
+<div id="cadContainer" style="height: 370px; width: 500px;"></div>
+<div id="eleContainer" style="height: 370px; width: 500px;"></div>
 
 <script>
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
@@ -107,26 +111,45 @@
         for (var i = 0; i < xmlDoc.getElementsByTagName("cad").length; i++) {
             cad.push(parseInt(xmlDoc.getElementsByTagName("cad")[i].firstChild.nodeValue));
         }
-
+         
+		//get points for graph 
+		var cad_graph_pts = []
+		for (var i = 0; i < cad.length; i++) {
+			cad_graph_pts.push({y: cad[i]});
+        }
 
         //list of heartrates
         var hr = [];
         var hrsum = 0;
+		var hr_graph_pts = []
         //create the list
         for (var i = 0; i < xmlDoc.getElementsByTagName("hr").length; i++) {
             hr.push(parseInt(xmlDoc.getElementsByTagName("hr")[i].firstChild.nodeValue));
         }
 
-        //sum the list
+        //sum the list and get graph points
         for (var i = 0; i < hr.length; i++) {
             hrsum += hr[i];
+			hr_graph_pts.push({y: hr[i]});
         }
 
         //calculate average
         var averagehr = hrsum / hr.length;
         document.getElementById("heart_rate").innerHTML += averagehr + " bpm";
 
+		//get elevation points
+		var ele = []
         var elevationgain = 0;
+		for (var i = 0; i < xmlDoc.getElementsByTagName("ele").length; i++) {
+            ele.push(parseInt(xmlDoc.getElementsByTagName("ele")[i].firstChild.nodeValue));
+        }
+		
+		//get points for graph
+	    var ele_graph_pts = []
+		for (var i = 0; i < ele.length; i++) {
+			ele_graph_pts.push({y: ele[i]});
+        }
+		
         //calculate elevation gain
         for (var i = 0; i < xmlDoc.getElementsByTagName("ele").length - 1; i++) {
             if (xmlDoc.getElementsByTagName("ele")[i].firstChild.nodeValue < xmlDoc.getElementsByTagName("ele")[i + 1].firstChild.nodeValue) {
@@ -138,7 +161,61 @@
         document.getElementById("elevation").innerHTML += elevationgain + " m";
 
         var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
+		
+		var hrchart = new CanvasJS.Chart("hrContainer", {
+	        animationEnabled: true,
+	        theme: "light2",
+	        title:{
+		        text: "Heart Rate"
+	        },
+	        axisY:{
+			    title: "Heart Rate (bpm)",
+		        includeZero: false
+	        },
+	        data: [{        
+		        type: "line",       
+		        dataPoints: 
+				    hr_graph_pts
+	        }]
+        });
+		
+		var cadchart = new CanvasJS.Chart("cadContainer", {
+	        animationEnabled: true,
+	        theme: "light2",
+	        title:{
+		        text: "Cadence"
+	        },			
+	        axisY:{
+			    title: "Cadence (spm)",
+		        includeZero: false
+	        },
+	        data: [{        
+		        type: "line",       
+		        dataPoints: 
+				    cad_graph_pts
+	        }]
+        });
 
+		var elechart = new CanvasJS.Chart("eleContainer", {
+	        animationEnabled: true,
+	        theme: "light2",
+	        title:{
+		        text: "Elevation"
+	        },
+	        axisY:{
+			    title: "Elevation (ft)",
+		        includeZero: false
+	        },
+	        data: [{        
+		        type: "line",       
+		        dataPoints: 
+				    ele_graph_pts
+	        }]
+        });
+		
+        hrchart.render();
+        cadchart.render();
+        elechart.render();
     }
 </script>
 </body>
