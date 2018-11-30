@@ -31,7 +31,7 @@
         }
 
         .upload {
-            text-align: center;
+            text-align: left;
             vertical-align: middle;
 
         }
@@ -40,6 +40,10 @@
             content: "";
             display: table;
             clear: both;
+        }
+
+        .row{
+            display: block;
         }
 
         .header {
@@ -57,9 +61,10 @@
             font-size: 30px;
             line-height: 25px;
             border-radius: 4px;
+            background-color: #0073e6;
         }
 
-        .header a:hover{
+        .header a:hover {
             background-color: skyblue;
         }
 
@@ -95,7 +100,7 @@
 
         .chartbutton {
             horiz-align: center;
-
+            text-align: center;
         }
 
         .avatar {
@@ -124,10 +129,12 @@
 <br>
 
 <div class="upload">
-    <div id="title"></div>
+    <div id="title" style="text-align: center; font-size: large;"></div>
     <form id="loadGPXFile-form">
         <input type="file" name="file" id="gpxfile" class="inputfile" size="50"/>
-        <input type="submit" value="Upload GPX"/>
+        <br>
+        <br>
+        <input type="submit" value="Upload GPX" style="background-color: #d9d9d9;"/>
     </form>
 </div>
 
@@ -154,9 +161,11 @@
 <div id="mapid" class="map"></div>
 
 <div class="chart">
-    <button onclick="myHR()" class="chartbutton">Heart Rate</button>
-    <button onclick="myC()" class="chartbutton">Cadence</button>
-    <button onclick="myE()" class="chartbutton">Elevation</button>
+    <div class="chartbutton">
+        <button onclick="myHR()">Heart Rate</button>
+        <button onclick="myC()">Cadence</button>
+        <button onclick="myE()">Elevation</button>
+    </div>
     <div id="hrContainer"></div>
     <div id="cadContainer"></div>
     <div id="eleContainer"></div>
@@ -215,7 +224,7 @@
 
         //change to km
         distance = distance / 1000;
-        document.getElementById("distance_value").innerHTML = distance + " km";
+        document.getElementById("distance_value").innerHTML = distance.toFixed(2) + " km";
 
         //set map to view the route
         mymap.setView(latlngs[0], 13);
@@ -236,7 +245,7 @@
         var time_in_minutes = (timetaken.getHours() * 60) + (timetaken.getMinutes()) + (timetaken.getSeconds() / 60);
         //calculate pace
         var pace = time_in_minutes / distance;
-        document.getElementById("pace_value").innerHTML = pace + " min/km";
+        document.getElementById("pace_value").innerHTML = pace.toFixed(2) + " min/km";
 
         //list of cadence
         var cad = [];
@@ -268,7 +277,7 @@
 
         //calculate average
         var averagehr = hrsum / hr.length;
-        document.getElementById("heart_rate_value").innerHTML = averagehr + " bpm";
+        document.getElementById("heart_rate_value").innerHTML = averagehr.toFixed(0) + " bpm";
 
         //get elevation points
         var ele = [];
