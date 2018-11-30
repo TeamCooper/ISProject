@@ -40,21 +40,24 @@
 <div class="header">
     <h1 id="title">Sample</h1>
     <p id="para">Sample</p>
+    <form id="loadGPXFile-form" class="upload">
+        <input type="file" name="file" id="gpxfile" class="inputfile" size="50"/>
+            <input type="submit" value="Upload GPX"/>
+    </form>
 </div>
 
 <div class="row">
     <div class="column">
         <ul>
-            <li id="time">Total run time:</li>
-            <li id="distance">Total distance:</li>
-            <li id="calories">Calories burned:</li>
+            <li id="time">Total run time: <span id="time_value"></span></li>
+            <li id="distance">Total distance: <span id="distance_value"></span></li>
+			<li id="pace">Average pace: <span id="pace_value"></span></li>
         </ul>
     </div>
     <div class="column" style="float: right">
         <ul>
-            <li id="pace">Average pace:</li>
-            <li id="heart_rate">Average heart rate:</li>
-            <li id="elevation">Total elevation gain:</li>
+            <li id="heart_rate">Average heart rate: <span id="heart_rate_value"></span></li>
+            <li id="elevation">Total elevation gain: <span id="elevation_value"></span></li>
         </ul>
     </div>
 </div>
@@ -83,18 +86,21 @@
     }
 
     mymap.on('click', onMapClick);
-
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200) {
-            myFunction(this);
-        }
-    };
-    xhttp.open("GET", "run.gpx", true);
-    xhttp.send();
-
-    function myFunction(xml) {
-        var xmlDoc = xml.responseXML;
+	
+	document.getElementById("loadGPXFile-form").addEventListener('submit', function(e){
+	    e.preventDefault();
+	    let file = document.getElementById('gpxfile').files[0]; 
+		var reader = new FileReader();
+		reader.readAsText(file);
+		reader.onload = function(event) {
+		    processFile(reader.result)
+		}
+	});
+	
+	function processFile(e){
+	    var parser = new DOMParser();
+		xmlDoc = parser.parseFromString(e, "text/xml");
+		
         document.getElementById("title").innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
         // list of points
         var latlngs = [];
@@ -115,7 +121,7 @@
 
         //change to km
         distance = distance / 1000;
-        document.getElementById("distance").innerHTML += distance + " km";
+        document.getElementById("distance_value").innerHTML = distance + " km";
 
         //set map to view the route
         mymap.setView(latlngs[0], 13);
@@ -130,19 +136,19 @@
 
         //calculate time taken
         var timetaken = new Date(millisecond = timeenddate - timestartdate);
-        document.getElementById("time").innerHTML += timetaken.toTimeString().slice(0, 8);
+        document.getElementById("time_value").innerHTML = timetaken.toTimeString().slice(0, 8);
 
         //calculate time taken in minutes
         var time_in_minutes = (timetaken.getHours() * 60) + (timetaken.getMinutes()) + (timetaken.getSeconds() / 60);
         //calculate pace
         var pace = time_in_minutes / distance;
-        document.getElementById("pace").innerHTML += pace + " min/km";
+        document.getElementById("pace_value").innerHTML = pace + " min/km";
 
         //list of cadence
         var cad = [];
         //create the list
-        for (var i = 0; i < xmlDoc.getElementsByTagName("cad").length; i++) {
-            cad.push(parseInt(xmlDoc.getElementsByTagName("cad")[i].firstChild.nodeValue));
+        for (var i = 0; i < xmlDoc.getElementsByTagName("ns3:cad").length; i++) {
+            cad.push(parseInt(xmlDoc.getElementsByTagName("ns3:cad")[i].firstChild.nodeValue));
         }
 
         //get points for graph
@@ -156,8 +162,8 @@
         var hrsum = 0;
         var hr_graph_pts = [];
         //create the list
-        for (var i = 0; i < xmlDoc.getElementsByTagName("hr").length; i++) {
-            hr.push(parseInt(xmlDoc.getElementsByTagName("hr")[i].firstChild.nodeValue));
+        for (var i = 0; i < xmlDoc.getElementsByTagName("ns3:hr").length; i++) {
+            hr.push(parseInt(xmlDoc.getElementsByTagName("ns3:hr")[i].firstChild.nodeValue));
         }
 
         //sum the list and get graph points
@@ -168,7 +174,7 @@
 
         //calculate average
         var averagehr = hrsum / hr.length;
-        document.getElementById("heart_rate").innerHTML += averagehr + " bpm";
+        document.getElementById("heart_rate_value").innerHTML = averagehr + " bpm";
 
         //get elevation points
         var ele = [];
@@ -191,7 +197,7 @@
 
         }
 
-        document.getElementById("elevation").innerHTML += elevationgain + " m";
+        document.getElementById("elevation_value").innerHTML = elevationgain + " m";
 
         var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
 
