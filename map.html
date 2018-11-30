@@ -34,12 +34,6 @@
             list-style-type: none;
         }
 
-        .upload {
-            text-align: left;
-            vertical-align: middle;
-            margin-left: 50px;
-
-        }
 
         .row:after {
             content: "";
@@ -49,14 +43,13 @@
 
         .row{
             display: block;
-            background-color: #0073e6;
             margin-right: 50px;
             margin-left: 50px;
         }
 
         .header {
             overflow: hidden;
-            background-color: #0073e6;
+            background-color: #f1f1f1;
             padding: 20px 10px;
         }
 
@@ -69,7 +62,6 @@
             font-size: 30px;
             line-height: 25px;
             border-radius: 4px;
-            background-color: #0073e6;
         }
 
         .header a:hover {
@@ -108,6 +100,24 @@
             margin-right: 50px;
         }
 
+        .load-left {
+            float: left;
+            width: 45%;
+            margin-left: 50px;
+            padding: 10px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+        .load-right {
+            float: right;
+            width: 45%;
+            padding: 10px;
+            margin-right: 50px;
+            text-align: center;
+            vertical-align: middle;
+        }
+
         .chartbutton {
             horiz-align: center;
             text-align: center;
@@ -120,6 +130,14 @@
             border-radius: 50%;
 
         }
+
+        .usename{
+          
+        }
+        .aaa{
+          text-align: center;
+          vertical-align: middle;
+        }
     </style>
 
 
@@ -131,23 +149,26 @@
 <div class="header">
     <a href="#default" class="logo">RunConnect</a>
     <div class="header-right">
-        <a style="font-size: 18px">Welcome, User!
-            <img src="avatar.jpg" alt="Avatar" class="avatar"></a>
+      <a>Welcome, <usename id="userNAME">User</usename>!
+      <img src="avatar.jpg" alt="Avatar" class="avatar"></a>
     </div>
 </div>
 
 <br>
-
-<div class="upload">
+<div class="row">
+    <div class="column">
+Upload gpx file:
     <div id="title" style="text-align: center; font-size: large;"></div>
     <form id="loadGPXFile-form">
         <input type="file" name="file" id="gpxfile" class="inputfile" size="50"/>
-        <br>
-        <br>
         <input type="submit" value="Upload GPX" style="background-color: #d9d9d9;"/>
     </form>
 </div>
-
+<div class="column" style="float: right">
+  <input type="text" id="weight" value="" placeholder="Weight(kg)">
+  <button onclick="cCalories()">Calculate calories burn</button>
+</div>
+</div>
 <br>
 
 <div class="row">
@@ -162,6 +183,7 @@
         <ul>
             <li id="heart_rate">Average heart rate: <span id="heart_rate_value"></span></li>
             <li id="elevation">Total elevation gain: <span id="elevation_value"></span></li>
+            <li id="calories_burned">Total calories burn: <span id="calories_burned_value"></span></li>
         </ul>
     </div>
 </div>
@@ -183,6 +205,7 @@
 
 
 <script>
+    var time_in_minutes;
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
         maxZoom: 18,
@@ -214,7 +237,10 @@
         var parser = new DOMParser();
         xmlDoc = parser.parseFromString(e, "text/xml");
 
-        document.getElementById("title").innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+        //change name when file loaded
+        var username = document.getElementById("userNAME");
+        username.innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
+
         // list of points
         var latlngs = [];
         var distance = 0;
@@ -252,7 +278,7 @@
         document.getElementById("time_value").innerHTML = timetaken.toTimeString().slice(0, 8);
 
         //calculate time taken in minutes
-        var time_in_minutes = (timetaken.getHours() * 60) + (timetaken.getMinutes()) + (timetaken.getSeconds() / 60);
+        time_in_minutes = (timetaken.getHours() * 60) + (timetaken.getMinutes()) + (timetaken.getSeconds() / 60);
         //calculate pace
         var pace = time_in_minutes / distance;
         document.getElementById("pace_value").innerHTML = pace.toFixed(2) + " min/km";
@@ -309,8 +335,17 @@
             }
 
         }
-
         document.getElementById("elevation_value").innerHTML = elevationgain + " m";
+
+
+        //calculate calories burned
+        cCalories(time_in_minutes)
+        //var weight = document.getElementById("weight").value;
+        //var caloriesburned = weight*time_in_minutes*0.175
+        //document.getElementById("calories_burned_value").innerHTML = caloriesburned;
+        
+        //weight*duration*0.175
+
 
         var polyline = L.polyline(latlngs, {color: 'red'}).addTo(mymap);
 
@@ -404,6 +439,12 @@
             z.style.display = "block";
         }
     }
+
+function cCalories() {
+        var weight = document.getElementById("weight").value;
+        var caloriesburned = weight*time_in_minutes*0.175
+        document.getElementById("calories_burned_value").innerHTML = caloriesburned;
+}
 </script>
 </body>
 </html>
