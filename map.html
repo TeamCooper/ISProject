@@ -13,132 +13,128 @@
             crossorigin=""></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-<style>
+    <style>
 
-* {box-sizing: border-box;}
+        * {
+            box-sizing: border-box;
+        }
 
-body { 
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-}
+        body {
+            margin: 0;
+            font-family: Arial, Helvetica, sans-serif;
+        }
 
-.column {
-    float: left;
-    width: 48%;
-    padding: 10px;
-}
-.aaa{
-  text-align: center;
-  vertical-align: middle;
+        .column {
+            float: left;
+            width: 48%;
+            padding: 10px;
+        }
 
-}
+        .upload {
+            text-align: center;
+            vertical-align: middle;
 
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
+        }
 
-.header {
-  overflow: hidden;
-  background-color: #f1f1f1;
-  padding: 20px 10px;
-}
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
 
-.header a0 {
-  float: left;
-  color: black;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 35px; 
-  line-height: 25px;
-  border-radius: 4px; 
-}
-.header a {
-  float: left;
-  color: black;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 17px; 
-  line-height: 25px;
-  border-radius: 4px;
-}
-.header-right {
-  float: right;
-}
+        .header {
+            overflow: hidden;
+            background-color: #f1f1f1;
+            padding: 20px 10px;
+        }
 
-@media screen and (max-width: 500px) {
-  .header a {
-    float: none;
-    display: block;
-    text-align: left;
-  }
-  .header-right {
-    float: none;
-  }
-}
-div.map {
-    float: left;
-    width: 600px; 
-    height: 400px;
-    padding: 10px;
-}
+        .header a {
+            float: left;
+            color: black;
+            text-align: center;
+            padding: 12px;
+            text-decoration: none;
+            font-size: 17px;
+            line-height: 25px;
+            border-radius: 4px;
+        }
 
-div.chart {
-    float: right;
-    width: 600px; 
-    height: 400px;
-    padding: 10px;
-}
+        .header-right {
+            float: right;
+        }
 
+        @media screen and (max-width: 500px) {
+            .header a {
+                float: none;
+                display: block;
+                text-align: left;
+            }
 
+            .header-right {
+                float: none;
+            }
+        }
 
-.alignleft {
-	float: left;
-}
-.alignright {
-	float: right;
-}
-.avatar {
-    vertical-align: middle;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
+        .map {
+            float: left;
+            width: 48%;
+            height: 400px;
+            padding: 10px;
+        }
 
-}
-</style>
+        .chart {
+            float: right;
+            width: 48%;
+            height: 400px;
+            padding: 10px;
+        }
+
+        .chartbutton{
+            horiz-align: center;
+
+        }
+
+        .avatar {
+            vertical-align: middle;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+
+        }
+    </style>
 
 
 </head>
 
 <body>
 
-<body>
+
 <div class="header">
-  <a0 href="#default" class="logo">RunConnect</a0>
-  <div class="header-right">
-    <a>Welcome, User!
-    <img src="avatar.jpg" alt="Avatar" class="avatar"></a>
-  </div>
+    <a href="#default" class="logo">RunConnect</a>
+    <div class="header-right">
+        <a>Welcome, User!
+            <img src="avatar.jpg" alt="Avatar" class="avatar"></a>
+    </div>
 </div>
 
-</br>
-<div class="aaa">
-<div id="title"></div>
-<form id="loadGPXFile-form" class="upload">
+<br>
+
+<div class="upload">
+    <div id="title"></div>
+    <form id="loadGPXFile-form">
         <input type="file" name="file" id="gpxfile" class="inputfile" size="50"/>
-            <input type="submit" value="Upload GPX"/>
+        <input type="submit" value="Upload GPX"/>
     </form>
 </div>
+
+<br>
 
 <div class="row">
     <div class="column">
         <ul>
             <li id="time">Total run time: <span id="time_value"></span></li>
             <li id="distance">Total distance: <span id="distance_value"></span></li>
-			<li id="pace">Average pace: <span id="pace_value"></span></li>
+            <li id="pace">Average pace: <span id="pace_value"></span></li>
         </ul>
     </div>
     <div class="column" style="float: right">
@@ -149,14 +145,18 @@ div.chart {
     </div>
 </div>
 
+<br>
 
-<div id="mapid" style="width: 600px; height: 400px;"></div>
-</br>
-<button onclick="myHR()">Heart Rate</button><button onclick="myC()">Cadence</button><button onclick="myE()">Elevation</button>
-<div id="hrContainer" style="height: 370px; width: 500px;"></div>
-<div id="cadContainer" style="height: 370px; width: 500px;"></div>
-<div id="eleContainer" style="height: 370px; width: 500px;"></div>
+<div id="mapid" class="map"></div>
 
+<div class="chart">
+<button onclick="myHR()" class="chartbutton">Heart Rate</button>
+<button onclick="myC()" class="chartbutton">Cadence</button>
+<button onclick="myE()" class="chartbutton">Elevation</button>
+<div id="hrContainer"></div>
+<div id="cadContainer"></div>
+<div id="eleContainer"></div>
+</div>
 <!--
 <div id="hrContainer" style="height: 370px; width: 500px;"></div>
 <div id="cadContainer" style="height: 370px; width: 500px;"></div>
@@ -179,21 +179,21 @@ div.chart {
     }
 
     mymap.on('click', onMapClick);
-	
-	document.getElementById("loadGPXFile-form").addEventListener('submit', function(e){
-	    e.preventDefault();
-	    let file = document.getElementById('gpxfile').files[0]; 
-		var reader = new FileReader();
-		reader.readAsText(file);
-		reader.onload = function(event) {
-		    processFile(reader.result)
-		}
-	});
-	
-	function processFile(e){
-	    var parser = new DOMParser();
-		xmlDoc = parser.parseFromString(e, "text/xml");
-		
+
+    document.getElementById("loadGPXFile-form").addEventListener('submit', function (e) {
+        e.preventDefault();
+        let file = document.getElementById('gpxfile').files[0];
+        var reader = new FileReader();
+        reader.readAsText(file);
+        reader.onload = function (event) {
+            processFile(reader.result)
+        }
+    });
+
+    function processFile(e) {
+        var parser = new DOMParser();
+        xmlDoc = parser.parseFromString(e, "text/xml");
+
         document.getElementById("title").innerHTML = xmlDoc.getElementsByTagName("name")[0].childNodes[0].nodeValue;
         // list of points
         var latlngs = [];
@@ -345,44 +345,45 @@ div.chart {
         hrchart.render();
         cadchart.render();
         elechart.render();
-		
-		document.getElementById("hrContainer").style.display = "none";
-		document.getElementById("cadContainer").style.display = "none";
-		document.getElementById("eleContainer").style.display = "none";
-		
-    }
-function myHR() {
-    var x = document.getElementById("hrContainer");
-	var y = document.getElementById("cadContainer");
-	var z = document.getElementById("eleContainer");
-    if (x.style.display === "none") {
-        x.style.display = "block";
-		y.style.display = "none";
-		z.style.display = "none";
-    } 
-}
 
-function myC() {
-    var x = document.getElementById("hrContainer");
-	var y = document.getElementById("cadContainer");
-	var z = document.getElementById("eleContainer");
-    if (y.style.display === "none") {
-        x.style.display = "none";
-		y.style.display = "block";
-		z.style.display = "none";
-	}
-}
+        document.getElementById("hrContainer").style.display = "none";
+        document.getElementById("cadContainer").style.display = "none";
+        document.getElementById("eleContainer").style.display = "none";
 
-function myE() {
-    var x = document.getElementById("hrContainer");
-	var y = document.getElementById("cadContainer");
-	var z = document.getElementById("eleContainer");
-    if (z.style.display === "none") {
-        x.style.display = "none";
-		y.style.display = "none";
-		z.style.display = "block";
     }
-}
+
+    function myHR() {
+        var x = document.getElementById("hrContainer");
+        var y = document.getElementById("cadContainer");
+        var z = document.getElementById("eleContainer");
+        if (x.style.display === "none") {
+            x.style.display = "block";
+            y.style.display = "none";
+            z.style.display = "none";
+        }
+    }
+
+    function myC() {
+        var x = document.getElementById("hrContainer");
+        var y = document.getElementById("cadContainer");
+        var z = document.getElementById("eleContainer");
+        if (y.style.display === "none") {
+            x.style.display = "none";
+            y.style.display = "block";
+            z.style.display = "none";
+        }
+    }
+
+    function myE() {
+        var x = document.getElementById("hrContainer");
+        var y = document.getElementById("cadContainer");
+        var z = document.getElementById("eleContainer");
+        if (z.style.display === "none") {
+            x.style.display = "none";
+            y.style.display = "none";
+            z.style.display = "block";
+        }
+    }
 </script>
 </body>
 </html>
