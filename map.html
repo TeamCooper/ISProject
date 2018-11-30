@@ -44,7 +44,7 @@
 
         .header {
             overflow: hidden;
-            background-color: #f1f1f1;
+            background-color: #0073e6;
             padding: 20px 10px;
         }
 
@@ -54,9 +54,13 @@
             text-align: center;
             padding: 12px;
             text-decoration: none;
-            font-size: 17px;
+            font-size: 30px;
             line-height: 25px;
             border-radius: 4px;
+        }
+
+        .header a:hover{
+            background-color: skyblue;
         }
 
         .header-right {
@@ -89,7 +93,7 @@
             padding: 10px;
         }
 
-        .chartbutton{
+        .chartbutton {
             horiz-align: center;
 
         }
@@ -112,7 +116,7 @@
 <div class="header">
     <a href="#default" class="logo">RunConnect</a>
     <div class="header-right">
-        <a>Welcome, User!
+        <a style="font-size: 18px">Welcome, User!
             <img src="avatar.jpg" alt="Avatar" class="avatar"></a>
     </div>
 </div>
@@ -150,18 +154,15 @@
 <div id="mapid" class="map"></div>
 
 <div class="chart">
-<button onclick="myHR()" class="chartbutton">Heart Rate</button>
-<button onclick="myC()" class="chartbutton">Cadence</button>
-<button onclick="myE()" class="chartbutton">Elevation</button>
-<div id="hrContainer"></div>
-<div id="cadContainer"></div>
-<div id="eleContainer"></div>
+    <button onclick="myHR()" class="chartbutton">Heart Rate</button>
+    <button onclick="myC()" class="chartbutton">Cadence</button>
+    <button onclick="myE()" class="chartbutton">Elevation</button>
+    <div id="hrContainer"></div>
+    <div id="cadContainer"></div>
+    <div id="eleContainer"></div>
 </div>
-<!--
-<div id="hrContainer" style="height: 370px; width: 500px;"></div>
-<div id="cadContainer" style="height: 370px; width: 500px;"></div>
-<div id="eleContainer" style="height: 370px; width: 500px;"></div>
--->
+
+
 <script>
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
