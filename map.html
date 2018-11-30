@@ -228,7 +228,7 @@
 
 
         //calculate distance in metres
-        for (var i = 1; i < latlngs.length; i += 2) {
+        for (var i = 1; i < latlngs.length-1; i += 2) {
             distance += mymap.distance(latlngs[i], latlngs[i + 1]);
         }
 
