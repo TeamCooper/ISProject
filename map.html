@@ -100,24 +100,6 @@
             margin-right: 50px;
         }
 
-        .load-left {
-            float: left;
-            width: 45%;
-            margin-left: 50px;
-            padding: 10px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
-        .load-right {
-            float: right;
-            width: 45%;
-            padding: 10px;
-            margin-right: 50px;
-            text-align: center;
-            vertical-align: middle;
-        }
-
         .chartbutton {
             horiz-align: center;
             text-align: center;
@@ -133,6 +115,9 @@
 
         .usename{
           
+        }
+        .font-big{
+          font-size: 30px;
         }
         .aaa{
           text-align: center;
@@ -172,14 +157,14 @@ Upload gpx file:
 <br>
 
 <div class="row">
-    <div class="column">
+    <div class="column" style="font-size: 30px;">
         <ul>
             <li id="time">Total run time: <span id="time_value"></span></li>
             <li id="distance">Total distance: <span id="distance_value"></span></li>
             <li id="pace">Average pace: <span id="pace_value"></span></li>
         </ul>
     </div>
-    <div class="column" style="float: right">
+    <div class="column" style="float: right; font-size: 30px;">
         <ul>
             <li id="heart_rate">Average heart rate: <span id="heart_rate_value"></span></li>
             <li id="elevation">Total elevation gain: <span id="elevation_value"></span></li>
@@ -335,11 +320,11 @@ Upload gpx file:
             }
 
         }
-        document.getElementById("elevation_value").innerHTML = elevationgain + " m";
+        document.getElementById("elevation_value").innerHTML = Math.round(elevationgain) + " m";
 
 
         //calculate calories burned
-        cCalories(time_in_minutes)
+        cCalories()
         //var weight = document.getElementById("weight").value;
         //var caloriesburned = weight*time_in_minutes*0.175
         //document.getElementById("calories_burned_value").innerHTML = caloriesburned;
@@ -443,6 +428,7 @@ Upload gpx file:
 function cCalories() {
         var weight = document.getElementById("weight").value;
         var caloriesburned = weight*time_in_minutes*0.175
+        caloriesburned = Math.round(caloriesburned) + " cal"
         document.getElementById("calories_burned_value").innerHTML = caloriesburned;
 }
 </script>
