@@ -126,6 +126,7 @@ div.chart {
 
 </br>
 <div class="aaa">
+<div id="title"></div>
 <form id="loadGPXFile-form" class="upload">
         <input type="file" name="file" id="gpxfile" class="inputfile" size="50"/>
             <input type="submit" value="Upload GPX"/>
@@ -152,7 +153,9 @@ div.chart {
 <div id="mapid" style="width: 600px; height: 400px;"></div>
 </br>
 <button onclick="myHR()">Heart Rate</button><button onclick="myC()">Cadence</button><button onclick="myE()">Elevation</button>
-<div id="cContainer" style="height: 370px; width: 500px;"></div>
+<div id="hrContainer" style="height: 370px; width: 500px;"></div>
+<div id="cadContainer" style="height: 370px; width: 500px;"></div>
+<div id="eleContainer" style="height: 370px; width: 500px;"></div>
 
 <!--
 <div id="hrContainer" style="height: 370px; width: 500px;"></div>
@@ -342,16 +345,43 @@ div.chart {
         hrchart.render();
         cadchart.render();
         elechart.render();
+		
+		document.getElementById("hrContainer").style.display = "none";
+		document.getElementById("cadContainer").style.display = "none";
+		document.getElementById("eleContainer").style.display = "none";
+		
     }
 function myHR() {
-    hrchart.display = "cContainer";
+    var x = document.getElementById("hrContainer");
+	var y = document.getElementById("cadContainer");
+	var z = document.getElementById("eleContainer");
+    if (x.style.display === "none") {
+        x.style.display = "block";
+		y.style.display = "none";
+		z.style.display = "none";
+    } 
 }
-function myC() {
-    cadContainer.display = "cContainer";
 
+function myC() {
+    var x = document.getElementById("hrContainer");
+	var y = document.getElementById("cadContainer");
+	var z = document.getElementById("eleContainer");
+    if (y.style.display === "none") {
+        x.style.display = "none";
+		y.style.display = "block";
+		z.style.display = "none";
+	}
 }
+
 function myE() {
-    eleContainer.display = "cContainer";
+    var x = document.getElementById("hrContainer");
+	var y = document.getElementById("cadContainer");
+	var z = document.getElementById("eleContainer");
+    if (z.style.display === "none") {
+        x.style.display = "none";
+		y.style.display = "none";
+		z.style.display = "block";
+    }
 }
 </script>
 </body>
