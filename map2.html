@@ -13,120 +13,34 @@
             crossorigin=""></script>
     <script src="https://canvasjs.com/assets/script/canvasjs.min.js"></script>
 
-<style>
+    <style>
 
-* {box-sizing: border-box;}
+        .header {
+            padding: 10px;
+            text-align: center;
+        }
 
-body { 
-  margin: 0;
-  font-family: Arial, Helvetica, sans-serif;
-}
+        .column {
+            float: left;
+            width: 48%;
+            padding: 10px;
+        }
 
-.column {
-    float: left;
-    width: 48%;
-    padding: 10px;
-}
-.aaa{
-  text-align: center;
-  vertical-align: middle;
-
-}
-
-.row:after {
-    content: "";
-    display: table;
-    clear: both;
-}
-
-.header {
-  overflow: hidden;
-  background-color: #f1f1f1;
-  padding: 20px 10px;
-}
-
-.header a0 {
-  float: left;
-  color: black;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 35px; 
-  line-height: 25px;
-  border-radius: 4px; 
-}
-.header a {
-  float: left;
-  color: black;
-  text-align: center;
-  padding: 12px;
-  text-decoration: none;
-  font-size: 17px; 
-  line-height: 25px;
-  border-radius: 4px;
-}
-.header-right {
-  float: right;
-}
-
-@media screen and (max-width: 500px) {
-  .header a {
-    float: none;
-    display: block;
-    text-align: left;
-  }
-  .header-right {
-    float: none;
-  }
-}
-div.map {
-    float: left;
-    width: 600px; 
-    height: 400px;
-    padding: 10px;
-}
-
-div.chart {
-    float: right;
-    width: 600px; 
-    height: 400px;
-    padding: 10px;
-}
-
-
-
-.alignleft {
-	float: left;
-}
-.alignright {
-	float: right;
-}
-.avatar {
-    vertical-align: middle;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-
-}
-</style>
-
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
 
 </head>
 
 <body>
 
-<body>
 <div class="header">
-  <a0 href="#default" class="logo">RunConnect</a0>
-  <div class="header-right">
-    <a>Welcome, User!
-    <img src="avatar.jpg" alt="Avatar" class="avatar"></a>
-  </div>
-</div>
-
-</br>
-<div class="aaa">
-<form id="loadGPXFile-form" class="upload">
+    <h1 id="title">Sample</h1>
+    <p id="para">Sample</p>
+    <form id="loadGPXFile-form" class="upload">
         <input type="file" name="file" id="gpxfile" class="inputfile" size="50"/>
             <input type="submit" value="Upload GPX"/>
     </form>
@@ -148,17 +62,13 @@ div.chart {
     </div>
 </div>
 
-
 <div id="mapid" style="width: 600px; height: 400px;"></div>
-</br>
-<button onclick="myHR()">Heart Rate</button><button onclick="myC()">Cadence</button><button onclick="myE()">Elevation</button>
-<div id="cContainer" style="height: 370px; width: 500px;"></div>
+<br>
 
-<!--
 <div id="hrContainer" style="height: 370px; width: 500px;"></div>
 <div id="cadContainer" style="height: 370px; width: 500px;"></div>
 <div id="eleContainer" style="height: 370px; width: 500px;"></div>
--->
+
 <script>
     var mymap = L.map('mapid').setView([51.505, -0.09], 13);
     L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4NXVycTA2emYycXBndHRqcmZ3N3gifQ.rJcFIG214AriISLbB6B5aw', {
@@ -343,17 +253,8 @@ div.chart {
         cadchart.render();
         elechart.render();
     }
-function myHR() {
-    hrchart.display = "cContainer";
-}
-function myC() {
-    cadContainer.display = "cContainer";
-
-}
-function myE() {
-    eleContainer.display = "cContainer";
-}
 </script>
 </body>
 </html>
+
 
